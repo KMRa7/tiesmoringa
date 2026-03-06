@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>モリンガスチーム カウンセリングシート</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --line: #e6e6e6;
+      --text: #222;
+      --muted: #777;
+      --accent: #111;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
+    }
+
+    .titlebar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #efefef;
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+      padding: 14px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .sheet {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .intro {
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--line);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .label {
+      font-weight: 800;
+      line-height: 1.45;
+      padding-top: 10px;
+    }
+
+    .req {
+      margin-left: 4px;
+      font-weight: 900;
+    }
+
+    .control { width: 100%; }
+
+    .hint {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .noticeBox {
+      border: 1px solid #d8d8d8;
+      border-radius: 12px;
+      background: #fafafa;
+      padding: 12px;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .dangerList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .dangerItem,
+    .chip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid #d7d7d7;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 700;
+      background: #fff;
+      line-height: 1.5;
+    }
+
+    .dangerItem input,
+    .chip input,
+    .agreeLine input,
+    .radioLine input {
+      width: 20px;
+      height: 20px;
+      accent-color: #111;
+      margin: 0;
+      flex: 0 0 auto;
+    }
+
+    input[type="text"], select, textarea {
+      width: 100%;
+      border: 1px solid #d7d7d7;
+      border-radius: var(--radius);
+      background: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input[type="text"], select {
+      height: 46px;
+      padding: 0 12px;
+    }
+
+    textarea {
+      min-height: 120px;
+      padding: 12px;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: #98b7ff;
+      box-shadow: 0 0 0 3px rgba(11, 99, 255, .12);
+    }
+
+    .group {
+      margin-top: 6px;
+    }
+
+    .groupTitle {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #444;
+      font-weight: 800;
+    }
+
+    .chips {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subControl { margin-top: 10px; }
+
+    .radioList,
+    .agreeList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .radioLine,
+    .agreeLine {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #d7d7d7;
+      border-radius: 12px;
+      background: #fff;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      padding: 18px 14px 22px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      padding-bottom: calc(22px + env(safe-area-inset-bottom));
+    }
+
+    .btnRow {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btnGhost, .btnPrimary {
+      height: 52px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btnGhost {
+      border: 2px solid #666;
+      background: #fff;
+      color: #111;
+    }
+
+    .btnPrimary {
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .confirm {
+      display: none;
+      padding: 14px;
+    }
+
+    .confirm h2 {
+      margin: 6px 0 12px;
+      font-size: 18px;
+    }
+
+    .summary {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .sumRow {
+      display: flex;
+      gap: 12px;
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .sumRow:first-child { border-top: 0; }
+
+    .sumKey {
+      width: 200px;
+      min-width: 200px;
+      font-weight: 900;
+    }
+
+    .sumVal {
+      flex: 1;
+      word-break: break-word;
+      line-height: 1.7;
+    }
+
+    .blackNote {
+      background: #1c1c1c;
+      color: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      line-height: 1.7;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 560px) {
+      .row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .label { padding-top: 0; }
+      .sumRow {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .sumKey {
+        width: auto;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="titlebar">モリンガスチーム カウンセリングシート</div>
+
+  <main class="sheet" id="inputView">
+    <div class="intro"><strong>この度は、unitoモリンガスチームをご利用いただき、誠にありがとうございます。<br>
+      お客様に安心して施術を受けていただくため、下記の内容をご確認いただきますようお願いいたします。<br>
+      また、事前にお申し出がなかった場合や虚偽の申告をされていた場合は<br>
+      責任を負いかねることもございますので、ご了承くださいますようお願いいたします。</strong></div>
+
+    <form id="questionnaireForm" novalidate>
+      <div class="row">
+        <div class="label">お名前<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">フルネームでご入力ください。</p>
+          <input id="customerName" type="text" placeholder="例：山田 花子" autocomplete="name" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">平熱<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">普段の平熱をご入力ください。</p>
+          <input id="bodyTemp" type="text" inputmode="decimal" placeholder="例：36.5" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">施術をお受けいただけない方<span class="req">*</span></div>
+        <div class="control">
+          <div class="noticeBox">
+            以下の項目に該当する場合は施術をお受けいただけません。内容をご確認のうえ、該当しない場合のみチェックしてください。
+          </div>
+          <div class="dangerList">
+            <label class="dangerItem"><input type="checkbox" class="disallow">生理中ではありません</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">妊娠中、または妊娠の可能性はありません</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">心疾患・脳疾患はありません</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">体調不良ではありません（感染症罹患・アルコール摂取をしていません）</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">大きな手術後6か月以内ではなく、医師の許可が必要な状態ではありません</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">医師に発汗を伴う行為を止められていません</label>
+            <label class="dangerItem"><input type="checkbox" class="disallow">アレルギーや体調面の不安について、必要な医師確認が未了の状態ではありません</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Q1 日頃、感じている不調<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">該当するものをすべて選択してください。</p>
+
+          <div class="group">
+            <div class="groupTitle">□ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q1" value="疲れやすい">疲れやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="風邪をひきやすい">風邪をひきやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="食欲がない">食欲がない</label>
+              <label class="chip"><input type="checkbox" class="q1" value="倦怠感">倦怠感</label>
+              <label class="chip"><input type="checkbox" class="q1" value="下痢をしやすい">下痢をしやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="朝、すっきり起きられない">朝、すっきり起きられない</label>
+              <label class="chip"><input type="checkbox" class="q1" value="お腹が張りやすい">お腹が張りやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="気分が落ち込む">気分が落ち込む</label>
+              <label class="chip"><input type="checkbox" class="q1" value="月経前調子が悪い">月経前調子が悪い</label>
+              <label class="chip"><input type="checkbox" class="q1" value="暴飲暴食しがち">暴飲暴食しがち</label>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="groupTitle">△ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q1" value="乾燥肌">乾燥肌</label>
+              <label class="chip"><input type="checkbox" class="q1" value="爪が薄く割れやすい">爪が薄く割れやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="髪がパサつく">髪がパサつく</label>
+              <label class="chip"><input type="checkbox" class="q1" value="熟睡できない">熟睡できない</label>
+              <label class="chip"><input type="checkbox" class="q1" value="便秘がち">便秘がち</label>
+              <label class="chip"><input type="checkbox" class="q1" value="立ちくらみ">立ちくらみ</label>
+              <label class="chip"><input type="checkbox" class="q1" value="目の下にクマができやすい">目の下にクマができやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="シミやアザができやすい">シミやアザができやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="肩こり・腰痛が強い">肩こり・腰痛が強い</label>
+              <label class="chip"><input type="checkbox" class="q1" value="月経痛が強い">月経痛が強い</label>
+              <label class="chip"><input type="checkbox" class="q1" value="顔色が悪い">顔色が悪い</label>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="groupTitle">○ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q1" value="むくみやすい">むくみやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="頭痛">頭痛</label>
+              <label class="chip"><input type="checkbox" class="q1" value="体が重くだるい">体が重くだるい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="車酔いしやすい">車酔いしやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="鼻水・鼻づまりしやすい">鼻水・鼻づまりしやすい</label>
+              <label class="chip"><input type="checkbox" class="q1" value="雨の日や気圧の変化で調子が悪くなる">雨の日や気圧の変化で調子が悪くなる</label>
+              <label class="chip"><input type="checkbox" class="q1" value="胃腸が弱い">胃腸が弱い</label>
+              <label class="chip"><input type="checkbox" class="q1" value="アレルギー" id="q1AllergyCheck">アレルギー</label>
+              <label class="chip"><input type="checkbox" class="q1" value="その他" id="q1OtherCheck">その他</label>
+            </div>
+          </div>
+
+          <div class="subControl" id="q1AllergyWrap" style="display:none;">
+            <p class="hint">Q1で「アレルギー」を選択した場合は内容をご記入ください。</p>
+            <input id="q1AllergyText" type="text" placeholder="例：花粉、ハウスダスト など" />
+          </div>
+
+          <div class="subControl" id="q1OtherWrap" style="display:none;">
+            <p class="hint">Q1で「その他」を選択した場合は内容をご記入ください。</p>
+            <input id="q1OtherText" type="text" placeholder="その他の不調をご記入ください" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Q2 肌悩みについて<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">該当するものをすべて選択してください。</p>
+
+          <div class="group">
+            <div class="groupTitle">□ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q2" value="シミ">シミ</label>
+              <label class="chip"><input type="checkbox" class="q2" value="たるみ">たるみ</label>
+              <label class="chip"><input type="checkbox" class="q2" value="くすみ">くすみ</label>
+              <label class="chip"><input type="checkbox" class="q2" value="しわ">しわ</label>
+              <label class="chip"><input type="checkbox" class="q2" value="たるみ毛穴">たるみ毛穴</label>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="groupTitle">△ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q2" value="乾燥">乾燥</label>
+              <label class="chip"><input type="checkbox" class="q2" value="うるおい不足">うるおい不足</label>
+              <label class="chip"><input type="checkbox" class="q2" value="かゆみ">かゆみ</label>
+              <label class="chip"><input type="checkbox" class="q2" value="ヒリヒリする">ヒリヒリする</label>
+              <label class="chip"><input type="checkbox" class="q2" value="赤み">赤み</label>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="groupTitle">○ チェック項目</div>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="q2" value="にきび・吹き出物">にきび・吹き出物</label>
+              <label class="chip"><input type="checkbox" class="q2" value="べたつき">べたつき</label>
+              <label class="chip"><input type="checkbox" class="q2" value="ゴワつき">ゴワつき</label>
+              <label class="chip"><input type="checkbox" class="q2" value="敏感肌">敏感肌</label>
+              <label class="chip"><input type="checkbox" class="q2" value="つまり毛穴">つまり毛穴</label>
+              <label class="chip"><input type="checkbox" class="q2" value="アトピー" id="q2AtopyCheck">アトピー</label>
+              <label class="chip"><input type="checkbox" class="q2" value="その他" id="q2OtherCheck">その他</label>
+            </div>
+          </div>
+
+          <div class="subControl" id="q2OtherWrap" style="display:none;">
+            <p class="hint">Q2で「その他」を選択した場合は内容をご記入ください。</p>
+            <input id="q2OtherText" type="text" placeholder="その他の肌悩みをご記入ください" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">モリンガ油使用<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">モリンガ油の使用可否を選択してください。</p>
+          <div class="radioList">
+            <label class="radioLine"><input type="radio" name="moringaOil" value="○" checked>○ 使用可</label>
+            <label class="radioLine"><input type="radio" name="moringaOil" value="×">× 使用しない</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">Q3 温浴習慣について<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">「あり / なし」を選び、「あり」の場合は該当するものをすべて選択してください。</p>
+          <select id="bathingHabit" required>
+            <option value="">—</option>
+            <option value="なし">なし</option>
+            <option value="あり">あり</option>
+          </select>
+
+          <div class="subControl" id="bathOptionsWrap" style="display:none;">
+            <div class="chips">
+              <label class="chip"><input type="checkbox" class="bath" value="よもぎ蒸し">よもぎ蒸し</label>
+              <label class="chip"><input type="checkbox" class="bath" value="モリンガ蒸し">モリンガ蒸し</label>
+              <label class="chip"><input type="checkbox" class="bath" value="サウナ">サウナ</label>
+              <label class="chip"><input type="checkbox" class="bath" value="岩盤浴">岩盤浴</label>
+              <label class="chip"><input type="checkbox" class="bath" value="酵素風呂">酵素風呂</label>
+              <label class="chip"><input type="checkbox" class="bath" value="ホットヨガ">ホットヨガ</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">施術中の確認事項<span class="req">*</span></div>
+        <div class="control">
+          <div class="blackNote">
+            施術中、下記を感じられた場合は必ずスタッフへお声かけください。ご確認いただけましたら、3ヶ所すべてにチェックをお願いします。
+          </div>
+          <div class="agreeList">
+            <label class="agreeLine"><input type="checkbox" class="duringCheck" value="熱くてやけどの恐れを感じたとき">熱くてやけどの恐れを感じたとき</label>
+            <label class="agreeLine"><input type="checkbox" class="duringCheck" value="体調に異変を感じたとき">体調に異変を感じたとき</label>
+            <label class="agreeLine"><input type="checkbox" class="duringCheck" value="その他、不安を感じたとき">その他、不安を感じたとき</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">最終確認<span class="req">*</span></div>
+        <div class="control">
+          <div class="agreeList">
+            <label class="agreeLine"><input id="agreeCheck" type="checkbox">上記内容に相違ありません。不調が出た場合は自己責任とし、以後相違が出た場合は申告します。</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">ご署名<span class="req">*</span></div>
+        <div class="control">
+          <p class="hint">ご署名としてお名前をご入力ください。</p>
+          <input id="signature" type="text" placeholder="例：山田 花子" required />
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="btnRow">
+          <button class="btnGhost" type="button" id="clearBtn">クリア</button>
+          <button class="btnPrimary" type="button" id="confirmBtn">確認する</button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <main class="sheet confirm" id="confirmView">
+    <div>
+      <h2>入力内容の確認</h2>
+      <div class="summary" id="summary"></div>
+      <div class="actions" style="position:static; padding:14px 0 0; border-top:0;">
+        <div class="btnRow">
+          <button class="btnGhost" type="button" id="backBtn">戻る</button>
+          <button class="btnPrimary" type="button" id="sendBtn">送信</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const el = (id) => document.getElementById(id);
+
+    const inputView = el('inputView');
+    const confirmView = el('confirmView');
+    const summary = el('summary');
+
+    const q1AllergyCheck = el('q1AllergyCheck');
+    const q1AllergyWrap = el('q1AllergyWrap');
+    const q1AllergyText = el('q1AllergyText');
+    const q1OtherCheck = el('q1OtherCheck');
+    const q1OtherWrap = el('q1OtherWrap');
+    const q1OtherText = el('q1OtherText');
+
+    const q2OtherCheck = el('q2OtherCheck');
+    const q2OtherWrap = el('q2OtherWrap');
+    const q2OtherText = el('q2OtherText');
+
+    const bathingHabit = el('bathingHabit');
+    const bathOptionsWrap = el('bathOptionsWrap');
+
+    function syncUI() {
+      q1AllergyWrap.style.display = q1AllergyCheck.checked ? 'block' : 'none';
+      if (!q1AllergyCheck.checked) q1AllergyText.value = '';
+
+      q1OtherWrap.style.display = q1OtherCheck.checked ? 'block' : 'none';
+      if (!q1OtherCheck.checked) q1OtherText.value = '';
+
+      q2OtherWrap.style.display = q2OtherCheck.checked ? 'block' : 'none';
+      if (!q2OtherCheck.checked) q2OtherText.value = '';
+
+      bathOptionsWrap.style.display = bathingHabit.value === 'あり' ? 'block' : 'none';
+      if (bathingHabit.value !== 'あり') {
+        document.querySelectorAll('.bath').forEach(chk => chk.checked = false);
+      }
+    }
+
+    q1AllergyCheck.addEventListener('change', syncUI);
+    q1OtherCheck.addEventListener('change', syncUI);
+    q2OtherCheck.addEventListener('change', syncUI);
+    bathingHabit.addEventListener('change', syncUI);
+    syncUI();
+
+    function getCheckedValues(selector) {
+      return [...document.querySelectorAll(selector + ':checked')].map(v => v.value);
+    }
+
+    function getData() {
+      const q1 = getCheckedValues('.q1').filter(v => v !== 'アレルギー' && v !== 'その他');
+      if (q1AllergyCheck.checked) {
+        q1.push(q1AllergyText.value.trim() ? `アレルギー（${q1AllergyText.value.trim()}）` : 'アレルギー');
+      }
+      if (q1OtherCheck.checked) {
+        q1.push(q1OtherText.value.trim() ? `その他（${q1OtherText.value.trim()}）` : 'その他');
+      }
+
+      const q2 = getCheckedValues('.q2').filter(v => v !== 'その他');
+      if (q2OtherCheck.checked) {
+        q2.push(q2OtherText.value.trim() ? `その他（${q2OtherText.value.trim()}）` : 'その他');
+      }
+
+      const bathChecks = getCheckedValues('.bath');
+      const disallowChecks = document.querySelectorAll('.disallow:checked').length;
+      const duringChecks = getCheckedValues('.duringCheck');
+      const moringaOil = document.querySelector('input[name="moringaOil"]:checked')?.value || '';
+
+      return {
+        customerName: el('customerName').value.trim(),
+        bodyTemp: el('bodyTemp').value.trim(),
+        disallowChecks,
+        q1,
+        q2,
+        moringaOil,
+        bathingHabit: bathingHabit.value,
+        bathChecks,
+        duringChecks,
+        agreeCheck: el('agreeCheck').checked,
+        signature: el('signature').value.trim()
+      };
+    }
+
+    function validate() {
+      const d = getData();
+      if (!d.customerName) return alertFocus('お名前を入力してください。', 'customerName');
+      if (!d.bodyTemp) return alertFocus('平熱を入力してください。', 'bodyTemp');
+      if (d.disallowChecks !== 7) return alertOnly('施術をお受けいただけない方の確認項目をすべてご確認ください。');
+      if (!d.q1.length) return alertOnly('Q1 日頃、感じている不調を1つ以上選択してください。');
+      if (q1AllergyCheck.checked && !q1AllergyText.value.trim()) return alertFocus('Q1のアレルギー内容を入力してください。', 'q1AllergyText');
+      if (q1OtherCheck.checked && !q1OtherText.value.trim()) return alertFocus('Q1のその他内容を入力してください。', 'q1OtherText');
+      if (!d.q2.length) return alertOnly('Q2 肌悩みについてを1つ以上選択してください。');
+      if (q2OtherCheck.checked && !q2OtherText.value.trim()) return alertFocus('Q2のその他内容を入力してください。', 'q2OtherText');
+      if (!d.bathingHabit) return alertFocus('Q3 温浴習慣についてを選択してください。', 'bathingHabit');
+      if (d.bathingHabit === 'あり' && !d.bathChecks.length) return alertOnly('Q3で「あり」を選んだ場合は該当する温浴習慣を選択してください。');
+      if (d.duringChecks.length !== 3) return alertOnly('施術中の確認事項は3項目すべてにチェックしてください。');
+      if (!d.agreeCheck) return alertOnly('最終確認にチェックしてください。');
+      if (!d.signature) return alertFocus('ご署名を入力してください。', 'signature');
+      return d;
+    }
+
+    function alertFocus(message, id) {
+      alert(message);
+      el(id).focus();
+      return null;
+    }
+
+    function alertOnly(message) {
+      alert(message);
+      return null;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    el('confirmBtn').addEventListener('click', () => {
+      const d = validate();
+      if (!d) return;
+
+      const rows = [
+        ['お名前', d.customerName],
+        ['平熱', d.bodyTemp + '℃'],
+        ['施術不可項目の確認', '全項目確認済み'],
+        ['Q1 日頃、感じている不調', d.q1.join('、')],
+        ['Q2 肌悩みについて', d.q2.join('、')],
+        ['モリンガ油使用', d.moringaOil === '○' ? '○ 使用可' : '× 使用しない'],
+        ['Q3 温浴習慣について', d.bathingHabit === 'あり' ? `あり（${d.bathChecks.join('、')}）` : 'なし'],
+        ['施術中の確認事項', d.duringChecks.join('、')],
+        ['最終確認', '確認済み'],
+        ['ご署名', d.signature]
+      ];
+
+      summary.innerHTML = rows.map(([k, v]) => `
+        <div class="sumRow">
+          <div class="sumKey">${escapeHtml(k)}</div>
+          <div class="sumVal">${escapeHtml(v)}</div>
+        </div>
+      `).join('');
+
+      inputView.style.display = 'none';
+      confirmView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    el('backBtn').addEventListener('click', () => {
+      confirmView.style.display = 'none';
+      inputView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    el('clearBtn').addEventListener('click', () => {
+      if (!confirm('入力内容をクリアしますか？')) return;
+      document.getElementById('questionnaireForm').reset();
+      const defaultOil = document.querySelector('input[name="moringaOil"][value="○"]');
+      if (defaultOil) defaultOil.checked = true;
+      syncUI();
+    });
+
+    el('sendBtn').addEventListener('click', () => {
+      const d = validate();
+      if (!d) return;
+
+      const message = `≪モリンガスチーム カウンセリングシート≫\n【お名前】${d.customerName}\n【平熱】${d.bodyTemp}℃\n【施術不可項目の確認】全項目確認済み\n【Q1 日頃、感じている不調】${d.q1.join('、')}\n【Q2 肌悩みについて】${d.q2.join('、')}\n【モリンガ油使用】${d.moringaOil === '○' ? '○ 使用可' : '× 使用しない'}\n【Q3 温浴習慣について】${d.bathingHabit === 'あり' ? `あり（${d.bathChecks.join('、')}）` : 'なし'}\n【施術中の確認事項】${d.duringChecks.join('、')}\n【最終確認】確認済み\n【ご署名】${d.signature}`;
+
+      alert('送信デモです。実運用ではここをLIFF送信やスプレッドシート連携に置き換えます。');
+      console.log(message);
+    });
+  </script>
+</body>
+</html>
