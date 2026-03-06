@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
   <title>ネイル カウンセリングフォーム</title>
   <style>
     :root {
@@ -617,7 +618,8 @@
   </main>
 
   <script>
-    const LIFF_ID = '2009341141-s2ATd7PE';
+    const LIFF_ID = '2009341141-a9sR1HU9';
+
     const el = (id) => document.getElementById(id);
 
     const inputView = el('inputView');
@@ -646,6 +648,7 @@
       } catch (error) {
         console.warn('LIFF init failed:', error);
       }
+
       syncUI();
     });
 
@@ -691,7 +694,7 @@
       const bathChecks = getCheckedValues('.bath');
       const disallowChecks = document.querySelectorAll('.disallow:checked').length;
       const duringChecks = getCheckedValues('.duringCheck');
-      const moringaOil = document.querySelector('input[name="moringaOil"]:checked')?.value || document.querySelector('input[name="Oil"]:checked')?.value || '';
+      const moringaOil = document.querySelector('input[name="moringaOil"]:checked')?.value || '';
 
       return {
         customerName: el('customerName').value.trim(),
@@ -798,7 +801,7 @@
     el('clearBtn').addEventListener('click', () => {
       if (!confirm('入力内容をクリアしますか？')) return;
       document.getElementById('questionnaireForm').reset();
-      const defaultOil = document.querySelector('input[name="Oil"][value="○"]') || document.querySelector('input[name="moringaOil"][value="○"]');
+      const defaultOil = document.querySelector('input[name="moringaOil"][value="○"]');
       if (defaultOil) defaultOil.checked = true;
       syncUI();
     });
